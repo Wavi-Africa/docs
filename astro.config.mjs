@@ -11,10 +11,11 @@ export default defineConfig({
 			title: 'Wavi Africa Docs',
 			description: 'SMS, Email, OTP and WhatsApp APIs for Africa.',
 			logo: {
-				src: './src/assets/wavi-icon.png',
+				light: './src/assets/wavi-icon.png',
+				dark: './src/assets/wavi-icon.png',
 				alt: 'Wavi Africa'
 			},
-			social: {},
+			social: [],
 			editLink: {
 				baseUrl: 'https://github.com/wavi-africa/docs/edit/main/'
 			},
