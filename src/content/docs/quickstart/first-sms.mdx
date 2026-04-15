@@ -1,0 +1,29 @@
+---
+title: Your first SMS
+description: Send an SMS in under a minute.
+sidebar:
+  order: 2
+---
+
+```bash
+curl https://api.waviafrica.com/v1/sms \
+  -H "Authorization: Bearer wavi_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": "+256700000000",
+    "from": "WAVI",
+    "text": "Your code is 123456"
+  }'
+```
+
+Response:
+
+```json
+{
+  "id": "msg_01HX...",
+  "status": "queued",
+  "channel": "sms"
+}
+```
+
+The message lands in the dashboard under **Messages** with a live delivery status.

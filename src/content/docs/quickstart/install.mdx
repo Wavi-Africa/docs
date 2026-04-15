@@ -1,0 +1,41 @@
+---
+title: Install
+description: Get set up with Wavi Africa in a minute.
+sidebar:
+  order: 1
+---
+
+Get an API key from the [dashboard](https://app.waviafrica.com/api-keys), then pick your language.
+
+## curl
+
+```bash
+curl https://api.waviafrica.com/v1/sms \
+  -H "Authorization: Bearer wavi_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{"to":"+256700000000","from":"WAVI","text":"Hello from Wavi"}'
+```
+
+## Node
+
+```bash
+npm install @wavi-africa/sdk
+```
+
+```js
+import { Wavi } from '@wavi-africa/sdk';
+const wavi = new Wavi({ apiKey: process.env.WAVI_API_KEY });
+await wavi.sms.send({ to: '+256700000000', from: 'WAVI', text: 'Hello' });
+```
+
+## Python
+
+```bash
+pip install wavi-africa
+```
+
+```python
+from wavi_africa import Wavi
+wavi = Wavi(api_key="wavi_live_...")
+wavi.sms.send(to="+256700000000", from_="WAVI", text="Hello")
+```

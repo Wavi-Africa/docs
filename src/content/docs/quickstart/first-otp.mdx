@@ -1,0 +1,24 @@
+---
+title: Your first OTP
+description: Send and verify a one-time code without picking the channel.
+sidebar:
+  order: 4
+---
+
+Wavi picks the channel for you. Today that always means SMS; when WhatsApp goes live, high-reachability users will get it automatically — no code changes.
+
+## Send
+
+```bash
+curl https://api.waviafrica.com/v1/otp \
+  -H "Authorization: Bearer wavi_live_..." \
+  -d '{"to": "+256700000000", "purpose": "login"}'
+```
+
+## Verify
+
+```bash
+curl https://api.waviafrica.com/v1/otp/verify \
+  -H "Authorization: Bearer wavi_live_..." \
+  -d '{"to": "+256700000000", "code": "123456", "purpose": "login"}'
+```

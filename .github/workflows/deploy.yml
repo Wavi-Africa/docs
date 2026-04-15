@@ -1,0 +1,47 @@
+name: Deploy docs
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate API reference from wavi-api OpenAPI schema
+        # Skipped in CI until wavi-api is deployed and accessible
+        run: |
+          if [ -f scripts/gen_api_ref.py ]; then
+            python scripts/gen_api_ref.py || echo "API ref generation skipped"
+          fi
+        env:
+          WAVI_API_BASE: https://api.waviafrica.com
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to server
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avzr --delete
+          path: dist/
+          remote_path: /var/www/wavi-docs/
+          remote_host: ${{ secrets.DEPLOY_HOST }}
+          remote_user: ${{ secrets.DEPLOY_USER }}
+          remote_key: ${{ secrets.DEPLOY_SSH_KEY }}

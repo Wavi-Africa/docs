@@ -1,0 +1,20 @@
+---
+title: Your first email
+description: Send a transactional email via the Wavi API.
+sidebar:
+  order: 3
+---
+
+Add your sending domain under **Domains**, paste the DKIM and SPF records into your DNS, wait for verification, then:
+
+```bash
+curl https://api.waviafrica.com/v1/email \
+  -H "Authorization: Bearer wavi_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": "you@company.com",
+    "from": "hello@yourdomain.com",
+    "subject": "Welcome",
+    "html": "<p>Hi there,</p>"
+  }'
+```
