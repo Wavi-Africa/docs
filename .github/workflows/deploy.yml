@@ -5,8 +5,37 @@ on:
     branches: [main]
   workflow_dispatch:
 
+concurrency:
+  group: deploy-docs-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  # ----------------------------------------------------------------------
+  # 1. Check: full Astro/Starlight build — catches broken MDX and config.
+  # ----------------------------------------------------------------------
+  check:
+    name: Build check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+  # ----------------------------------------------------------------------
+  # 2. Deploy: rsync compiled static site to server, optionally gen API ref.
+  # ----------------------------------------------------------------------
   deploy:
+    name: Deploy to production
+    needs: check
     runs-on: ubuntu-latest
     environment: production
 
@@ -26,7 +55,6 @@ jobs:
         run: npm install
 
       - name: Generate API reference from wavi-api OpenAPI schema
-        # Skipped in CI until wavi-api is deployed and accessible
         run: |
           if [ -f scripts/gen_api_ref.py ]; then
             python scripts/gen_api_ref.py || echo "API ref generation skipped"
